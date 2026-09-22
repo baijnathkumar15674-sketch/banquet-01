@@ -23,7 +23,13 @@ export default function Customers() {
     const { data } = await api.get("/customers", { params: q ? { q } : {} });
     setRows(data);
   };
-  useEffect(() => { load(); }, []);
+  const load = useCallback(async () => {
+    // existing code
+}, []);
+
+useEffect(() => {
+    load();
+}, [load]);
 
   const submit = async () => {
     try {
