@@ -41,7 +41,13 @@ export default function Reports() {
   };
 
   const load = async () => { const { data } = await api.get("/reports/summary", { params: { start, end } }); setD(data); };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [start, end]);
+  const load = useCallback(async () => {
+    // existing code
+}, []);
+
+useEffect(() => {
+    load();
+}, [load]);
 
   if (!d) return <div className="text-muted-foreground">Loading…</div>;
 
