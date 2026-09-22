@@ -40,7 +40,13 @@ export default function CalendarPage() {
     ]);
     setBookings(b); setHalls(h);
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [year, month, hallFilter]);
+  const load = useCallback(async () => {
+    // existing code
+}, []);
+
+useEffect(() => {
+    load();
+}, [load]);
 
   const eventsOn = (d) => bookings.filter(b => d && b.event_date === d.toISOString().slice(0,10));
 
