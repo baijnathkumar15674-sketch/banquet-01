@@ -34,14 +34,8 @@ function BookingForm({ open, onClose, onSaved, editing }) {
   const [form, setForm] = useState(empty);
 
   useEffect(() => {
-    if (!open) return;
-    (async () => {
-      const [c, h, p] = await Promise.all([api.get("/customers"), api.get("/halls"), api.get("/packages")]);
-      setCustomers(c.data); setHalls(h.data); setPackages(p.data);
-    })();
-    setForm(editing || empty);
-    setAvail(null);
-  }, [open, editing]);
+    
+  }, []);
 
   const totals = useMemo(() => {
     const sub = +form.hall_charges + +form.package_charges + +form.food_charges + +form.decoration_charges + +form.additional_charges;
@@ -220,7 +214,13 @@ export default function Bookings() {
     const { data } = await api.get("/bookings", { params });
     setRows(data);
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [statusF]);
+  const load = useCallback(async () => {
+    // existing code
+}, []);
+
+useEffect(() => {
+    load();
+}, [load]);
 
   const del = async (id) => {
     if (!window.confirm("Cancel this booking?")) return;
