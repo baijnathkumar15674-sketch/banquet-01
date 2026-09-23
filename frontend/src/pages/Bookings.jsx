@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api, fmtINR, formatErr, STATUS_META } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -207,19 +207,17 @@ export default function Bookings() {
   const [editing, setEditing] = useState(null);
   const [payFor, setPayFor] = useState(null);
 
-  const load = async () => {
-    const params = {};
-    if (statusF !== "all") params.status = statusF;
-    if (q) params.q = q;
-    const { data } = await api.get("/bookings", { params });
-    setRows(data);
-  };
-  const load = useCallback(async () => {
-    // existing code
-}, []);
+ const load = useCallback(async () => {
+  const params = {};
+  if (statusF !== "all") params.status = statusF;
+  if (q) params.q = q;
+
+  const { data } = await api.get("/bookings", { params });
+  setRows(data);
+}, [statusF, q]);
 
 useEffect(() => {
-    load();
+  load();
 }, [load]);
 
   const del = async (id) => {
