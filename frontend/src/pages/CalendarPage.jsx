@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, STATUS_META, fmtINR } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,25 +29,33 @@ export default function CalendarPage() {
   const year = cursor.getFullYear(), month = cursor.getMonth();
   const cells = useMemo(() => monthGrid(year, month), [year, month]);
 
-  const load = async () => {
-    const start = new Date(year, month - 1, 1).toISOString().slice(0,10);
-    const end = new Date(year, month + 2, 0).toISOString().slice(0,10);
-    const params = { start, end };
-    if (hallFilter !== "all") params.hall_id = hallFilter;
-    const [{ data: b }, { data: h }] = await Promise.all([
-      api.get("/bookings/calendar", { params }),
-      api.get("/halls")
-    ]);
-    setBookings(b); setHalls(h);
-  };
-  const load = useCallback(async () => {
-    // existing code
-}, []);
+ const load = useCallback(async () => {
+  const start = new Date(year, month - 1, 1)
+    .toISOString()
+    .slice(0, 10);
+
+  const end = new Date(year, month + 2, 0)
+    .toISOString()
+    .slice(0, 10);
+
+  const params = { start, end };
+
+  if (hallFilter !== "all") {
+    params.hall_id = hallFilter;
+  }
+
+  const [{ data: b }, { data: h }] = await Promise.all([
+    api.get("/bookings/calendar", { params }),
+    api.get("/halls")
+  ]);
+
+  setBookings(b);
+  setHalls(h);
+}, [year, month, hallFilter]);
 
 useEffect(() => {
-    load();
+  load();
 }, [load]);
-
   const eventsOn = (d) => bookings.filter(b => d && b.event_date === d.toISOString().slice(0,10));
 
   // Week view: 7 days from Sunday of current week
