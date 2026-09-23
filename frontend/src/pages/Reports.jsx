@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { api, fmtINR } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,15 +40,17 @@ export default function Reports() {
     if (p!=="last_month") setEnd(now.toISOString().slice(0,10));
   };
 
-  const load = async () => { const { data } = await api.get("/reports/summary", { params: { start, end } }); setD(data); };
-  const load = useCallback(async () => {
-    // existing code
-}, []);
+ const load = useCallback(async () => {
+  const { data } = await api.get("/reports/summary", {
+    params: { start, end }
+  });
+
+  setD(data);
+}, [start, end]);
 
 useEffect(() => {
-    load();
+  load();
 }, [load]);
-
   if (!d) return <div className="text-muted-foreground">Loading…</div>;
 
   const catData = Object.entries(d.expenses.by_category).map(([k,v])=>({name:k, value:v}));
