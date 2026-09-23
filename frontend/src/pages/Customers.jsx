@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { api, fmtINR, formatErr } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,18 +19,17 @@ export default function Customers() {
   const [form, setForm] = useState(EMPTY);
   const [view, setView] = useState(null);
 
-  const load = async () => {
-    const { data } = await api.get("/customers", { params: q ? { q } : {} });
-    setRows(data);
-  };
   const load = useCallback(async () => {
-    // existing code
-}, []);
+  const { data } = await api.get("/customers", {
+    params: q ? { q } : {}
+  });
+
+  setRows(data);
+}, [q]);
 
 useEffect(() => {
-    load();
+  load();
 }, [load]);
-
   const submit = async () => {
     try {
       if (form.id) await api.put(`/customers/${form.id}`, form);
