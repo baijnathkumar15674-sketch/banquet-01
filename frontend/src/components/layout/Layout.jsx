@@ -45,6 +45,16 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
+      {/* Mobile Menu Button */}
+<div className="lg:hidden fixed top-4 left-4 z-50">
+  <Button
+    size="icon"
+    variant="outline"
+    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  >
+    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+  </Button>
+</div>
       {/* Sidebar */}
       <aside className="w-64 flex-shrink-0 border-r border-border/60 bg-card/80 backdrop-blur hidden lg:flex flex-col">
         <div className="h-16 px-6 flex items-center gap-2 border-b border-border/60">
@@ -85,6 +95,54 @@ export default function Layout({ children }) {
           </div>
         </div>
       </aside>
+      {mobileMenuOpen && (
+  <div
+    className="lg:hidden fixed inset-0 z-40 bg-black/60"
+    onClick={() => setMobileMenuOpen(false)}
+  >
+    <aside
+      className="w-72 h-full bg-card border-r border-border flex flex-col"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="h-16 px-6 flex items-center gap-2 border-b border-border/60">
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-700 flex items-center justify-center font-bold text-black">
+          GB
+        </div>
+        <div>
+          <div className="font-display text-lg leading-none gold-gradient-text font-bold">
+            GrandImperia
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Banquet BMS
+          </div>
+        </div>
+      </div>
+
+      <ScrollArea className="flex-1">
+        <nav className="p-3 space-y-1">
+          {items.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/"}
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                  isActive
+                    ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                }`
+              }
+            >
+              <Icon size={16} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+      </ScrollArea>
+    </aside>
+  </div>
+)}
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
