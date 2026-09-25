@@ -613,18 +613,26 @@ async def dashboard(user=Depends(get_current_user)):
     bookings = await db.bookings.find({}, {"_id": 0}).to_list(5000)
     expenses = await db.expenses.find({}, {"_id": 0}).to_list(5000)
     total_revenue = sum(b.get("total_amount", 0) for b in bookings if b["status"] != "cancelled")
-  payments = await db.payments.find({}, {"_id": 0}).to_list(5000)
+    payments = await db.payments.find({}, {"_id": 0}).to_list(5000)
 
-active_booking_ids = {
-    b["id"] for b in bookings
-    if b["status"] != "cancelled"
-}
+    active_booking_ids = {
+        b["id"] for b in bookings
+        if b["status"] != "cancelled"
+    }
 
-paid_revenue = sum(
-    p.get("amount", 0)
-    for p in payments
-    if p.get("booking_id") in active_booking_ids
-)
+    paid_revenue = sum(
+        p.get("amount", 0)
+        for p in payments
+        if p.get("booking_id") in active_booking_ids
+    )
+
+    pending_revenue = sum(
+        b.get("due_amount", 0)
+        for b in bookings
+        if b["status"] != "cancelled"
+    )
+
+    total_expenses = sum(e.get("amount", 0) for e in expenses)
     pending_revenue = sum(b.get("due_amount", 0) for b in bookings if b["status"] != "cancelled")
     total_expenses = sum(e.get("amount", 0) for e in expenses)
     today_bookings = [b for b in bookings if b["event_date"] == today]
