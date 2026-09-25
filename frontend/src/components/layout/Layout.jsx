@@ -146,7 +146,7 @@ export default function Layout({ children }) {
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 border-b border-border/60 bg-card/60 backdrop-blur sticky top-0 z-40 flex items-center px-6 justify-between">
+        <header className="h-16 border-b border-border/60 bg-card/60 backdrop-blur sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between">
           <div className="relative flex-1 max-w-md">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input data-testid="global-search" placeholder="Search bookings, customers…" className="pl-9 bg-background/60"/>
