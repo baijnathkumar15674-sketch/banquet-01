@@ -1,9 +1,10 @@
+import { Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarDays, ListChecks, Users, Building2, Package,
-  CreditCard, FileText, Wallet, BarChart3, Shield, Bell, ScrollText,
-  Settings as SettingsIcon, LogOut, Search
+CreditCard, FileText, Wallet, BarChart3, Shield, Bell, ScrollText,
+Settings as SettingsIcon, LogOut, Search, Menu, X
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { api, ROLES } from "@/lib/api";
