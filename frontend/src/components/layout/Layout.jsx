@@ -33,6 +33,7 @@ export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const nav = useNavigate();
   const [notifs, setNotifs] = useState([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const loadNotifs = async () => {
     try { const { data } = await api.get("/notifications"); setNotifs(data); } catch {}
