@@ -97,7 +97,7 @@ export default function Invoices() {
       </Card>
 
       <Dialog open={!!inv} onOpenChange={(o)=>!o&&setInv(null)}>
-        <DialogContent className="invoice-dialog max-w-3xl">
+        <DialogContent className="invoice-dialog max-w-3xl max-h-[92vh] overflow-y-auto">
           <DialogHeader className="no-print">
             <DialogTitle className="flex justify-between items-center">
               <span>Invoice {inv?.invoice_number}</span>
