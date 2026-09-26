@@ -19,7 +19,7 @@ export default function Invoices() {
     catch (e) { toast.error(formatErr(e)); }
   };
 
-  retun (
+  return (
   <>
     <style>{`
       @media print {
