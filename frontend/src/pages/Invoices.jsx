@@ -164,7 +164,8 @@ export default function Invoices() {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+       </Dialog>
     </div>
+  </>
   );
 }
