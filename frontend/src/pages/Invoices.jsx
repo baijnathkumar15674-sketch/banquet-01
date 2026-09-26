@@ -19,7 +19,52 @@ export default function Invoices() {
     catch (e) { toast.error(formatErr(e)); }
   };
 
-  return (
+  retun (
+  <>
+    <style>{`
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+
+        body * {
+          visibility: hidden !important;
+        }
+
+        .invoice-dialog,
+        .invoice-dialog * {
+          visibility: visible !important;
+        }
+
+        .invoice-dialog {
+          position: absolute !important;
+          inset: 0 !important;
+          transform: none !important;
+          width: 100% !important;
+          max-width: none !important;
+          max-height: none !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+          border: none !important;
+          background: white !important;
+        }
+
+        .invoice-dialog .no-print {
+          display: none !important;
+        }
+
+        .invoice-dialog .print-area {
+          width: 100% !important;
+          max-width: none !important;
+          overflow: visible !important;
+          background: white !important;
+          color: black !important;
+          box-shadow: none !important;
+        }
+      }
+    `}</style>
+
     <div className="space-y-5" data-testid="invoices-page">
       <div>
         <h1 className="text-3xl font-display font-bold tracking-tight">Invoices</h1>
@@ -52,7 +97,7 @@ export default function Invoices() {
       </Card>
 
       <Dialog open={!!inv} onOpenChange={(o)=>!o&&setInv(null)}>
-        <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
+        <DialogContent className="invoice-dialog max-w-3xl">
           <DialogHeader className="no-print">
             <DialogTitle className="flex justify-between items-center">
               <span>Invoice {inv?.invoice_number}</span>
