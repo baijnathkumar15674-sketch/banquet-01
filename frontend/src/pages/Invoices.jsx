@@ -62,6 +62,10 @@ export default function Invoices() {
           color: black !important;
           box-shadow: none !important;
         }
+        .invoice-scroll {
+  max-height: none !important;
+  overflow: visible !important;
+}
       }
     `}</style>
 
