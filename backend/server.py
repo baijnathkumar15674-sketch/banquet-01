@@ -769,6 +769,7 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:5173",
     ],
+    allow_origin_regex=r"^https://banquet-01-hjjv-[a-zA-Z0-9-]+\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
