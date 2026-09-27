@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND = process.env.REACT_APP_BACKEND_URL;
+const BACKEND = "https://banquet-01-1.onrender.com";
 export const API_BASE = `${BACKEND}/api`;
 
 export const api = axios.create({
