@@ -6,6 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+function formatLocalDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
 
 function monthGrid(year, month) {
   const first = new Date(year, month, 1);
@@ -26,17 +32,12 @@ export default function CalendarPage() {
   const [hallFilter, setHallFilter] = useState("all");
   const [selected, setSelected] = useState(null);
 
-  const year = cursor.getFullYear(), month = cursor.getMonth();
-  const cells = useMemo(() => monthGrid(year, month), [year, month]);
+const year = cursor.getFullYear(), month = cursor.getMonth();
+const cells = useMemo(() => monthGrid(year, month), [year, month]);
 
- const load = useCallback(async () => {
-  const start = new Date(year, month - 1, 1)
-    .toISOString()
-    .slice(0, 10);
-
-  const end = new Date(year, month + 2, 0)
-    .toISOString()
-    .slice(0, 10);
+const load = useCallback(async () => {
+  const start = formatLocalDate(new Date(year, month - 1, 1));
+  const end = formatLocalDate(new Date(year, month + 2, 0));
 
   const params = { start, end };
 
@@ -49,15 +50,42 @@ export default function CalendarPage() {
     api.get("/halls")
   ]);
 
-  setBookings(b);
-  setHalls(h);
+  setBookings(Array.isArray(b) ? b : []);
+  setHalls(Array.isArray(h) ? h : []);
 }, [year, month, hallFilter]);
 
 useEffect(() => {
   load();
 }, [load]);
-  const eventsOn = (d) => bookings.filter(b => d && b.event_date === d.toISOString().slice(0,10));
 
+const eventsOn = (d) => {
+  if (!d) return [];
+
+  const dateStr = formatLocalDate(d);
+
+  return bookings.filter((b) => {
+    const eventDate = String(b.event_date || "").slice(0, 10);
+    return eventDate === dateStr;
+  });
+};
+
+  setBookings(Array.isArray(b) ? b : []);
+  setHalls(Array.isArray(h) ? h : []);
+}, [year, month, hallFilter]);
+
+useEffect(() => {
+  load();
+}, [load]);
+ const eventsOn = (d) => {
+  if (!d) return [];
+
+  const dateStr = formatLocalDate(d);
+
+  return bookings.filter((b) => {
+    const eventDate = String(b.event_date || "").slice(0, 10);
+    return eventDate === dateStr;
+  });
+};
   // Week view: 7 days from Sunday of current week
   const weekDays = useMemo(() => {
     const d = new Date(cursor); d.setDate(d.getDate() - d.getDay());
@@ -65,7 +93,7 @@ useEffect(() => {
   }, [cursor]);
 
   // Day timeline (hall x hour)
-  const dayStr = cursor.toISOString().slice(0,10);
+  const dayStr = formatLocalDate(cursor);
   const dayEvents = bookings.filter(b => b.event_date === dayStr);
   const hours = Array.from({length: 15}, (_, i) => 8 + i); // 8am-10pm
 
