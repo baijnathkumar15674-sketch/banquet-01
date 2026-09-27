@@ -763,9 +763,11 @@ app.include_router(api)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://banquet-01-1.onrender.com"
-    ],
+allow_origins=[
+    "https://banquet-01-hjjv-ashen.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
